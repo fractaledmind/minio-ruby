@@ -37,7 +37,7 @@ class TestCommands < ActiveSupport::TestCase
         assert_match Regexp.new("exe/test/minio"), executable
         assert_equal "server", command
         assert_equal 2, argv.size
-        assert_equal "--quiet",  argv[0]
+        assert_equal "--quiet", argv[0]
         assert_equal "/mnt/data", argv[1]
       end
       MinIO::Commands.stub :run, stub do
