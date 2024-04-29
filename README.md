@@ -58,30 +58,59 @@ MINIO_INSTALL_DIR=.bin
 
 ## Usage
 
-```shell
-$ minio --help
-NAME:
-  minio - High Performance Object Storage
+### Configuration
 
-DESCRIPTION:
-  Build high performance data infrastructure for machine learning, analytics and application data workloads with MinIO
+You can configure (if needed, this is optional) the `username` and `password` to secure the MinIO web dashboard. This Ruby interface permits you to use any method of storing secrets that you prefer. For example, you could store these secrets in Rails' encrypted credentials:
 
-USAGE:
-  minio [FLAGS] COMMAND [ARGS...]
+```ruby
+# config/initializers/minio.rb
+minio_credentials = Rails.application.credentials.minio
+Litestream.configure do |config|
+  config.username = minio_credentials.username
+  config.password = minio_credentials.password
+end
+```
 
-COMMANDS:
-  server  start object storage server
+The default credentials that MinIO uses are `minioadmin` for both the username and password. If you are using the default credentials, you do not need to configure the `username` and `password` in the initializer, but you should absolutely change the default credentials in a production environment.
 
-FLAGS:
-  --certs-dir value, -S value  path to certs directory
-  --quiet                      disable startup and info messages
-  --anonymous                  hide sensitive information from logging
-  --json                       output logs in JSON format
-  --help, -h                   show help
-  --version, -v                print the version
+If you want, you can also configure the username and password via environment variables:
 
-VERSION:
-  RELEASE.2024-04-18T19-09-19Z
+```sh
+export MINIO_ROOT_USER=frodo
+export MINIO_ROOT_PASSWORD=ikeptmysecrets
+```
+
+### Running the server
+
+You can start the MinIO server via the gem's rake task:
+
+```sh
+bin/rails minio:server
+# or
+bundle exec rake minio:server
+```
+
+If you need to pass arguments through the rake task to the underlying `minio` command, that can be done with argument forwarding:
+
+```sh
+bin/rails minio:server -- --directory /mnt/data
+```
+
+This example shows the special `--directory` option available on [the `server` command](https://min.io/docs/minio/linux/reference/minio-server/minio-server.html), which allows you to specify the directory where MinIO will store its data. By default, the gem will use the `storage/minio` directory in your Rails app.
+
+The MinIO `server` command supports various additional options, which can be passed through the rake task:
+
+```sh
+--config value               specify server configuration via YAML configuration [$MINIO_CONFIG]
+--address value              bind to a specific ADDRESS:PORT, ADDRESS can be an IP or hostname (default: ":9000") [$MINIO_ADDRESS]
+--console-address value      bind to a specific ADDRESS:PORT for embedded Console UI, ADDRESS can be an IP or hostname [$MINIO_CONSOLE_ADDRESS]
+--ftp value                  enable and configure an FTP(Secure) server
+--sftp value                 enable and configure an SFTP server
+--certs-dir value, -S value  path to certs directory (default: "~/.minio/certs")
+--quiet                      disable startup and info messages
+--anonymous                  hide sensitive information from logging
+--json                       output logs in JSON format
+--help, -h                   show help
 ```
 
 ## Troubleshooting
