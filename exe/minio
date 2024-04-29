@@ -1,0 +1,13 @@
+#! /usr/bin/env ruby
+# because rubygems shims assume a gem's executables are Ruby
+
+require "minio/commands"
+
+begin
+  command = [MinIO::Commands.executable, *ARGV]
+
+  exec(*command)
+rescue MinIO::Commands::UnsupportedPlatformException, MinIO::Commands::ExecutableNotFoundException => e
+  warn("ERROR: " + e.message)
+  exit 1
+end

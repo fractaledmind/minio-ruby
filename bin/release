@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+VERSION=$1
+
+if [ -z "$VERSION" ]; then
+  echo "Usage: $0 <version>"
+  exit 1
+fi
+
+printf "module MinIO\n  VERSION = \"$VERSION\"\nend\n" > ./lib/minio/version.rb
+bundle
+git add Gemfile.lock lib/minio/version.rb
+git commit -m "Bump version for $VERSION"
+git push
+git tag v$VERSION
+git push --tags
+
+rake package
+for gem in pkg/minio-$VERSION*.gem ; do
+  gem push "$gem" --host https://rubygems.org
+  rm "$gem"
+  rm -rf "${gem/.gem/}"
+done
