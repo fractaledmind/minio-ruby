@@ -79,7 +79,7 @@ module MinIO
           ENV["MINIO_ROOT_PASSWORD"] ||= MinIO.configuration.password
         end
 
-        cmd = [executable, "server", *argv, directory].flatten.compact
+        cmd = [executable, "server", *argv.stringify_keys, directory].flatten.compact
         puts cmd.inspect if ENV["DEBUG"]
 
         run(cmd, async: async)
