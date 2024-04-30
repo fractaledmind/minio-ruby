@@ -60,6 +60,21 @@ class TestCommands < ActiveSupport::TestCase
       end
     end
 
+    def test_server_with_symbol_option
+      stub = proc do |cmd, async|
+        executable, command, *argv = cmd
+        assert_match Regexp.new("exe/test/minio"), executable
+        assert_equal "server", command
+        assert_equal 3, argv.size
+        assert_equal "--console-address", argv[0]
+        assert_equal ":9001", argv[1]
+        assert_equal "/mnt/data", argv[2]
+      end
+      MinIO::Commands.stub :run, stub do
+        MinIO::Commands.server("/mnt/data", "--console-address": ":9001")
+      end
+    end
+
     def test_server_sets_username_env_var_from_config_when_env_var_not_set
       MinIO.configure do |config|
         config.username = "user"

@@ -38,7 +38,7 @@
 #  New rake tasks created:
 #
 #  - rake gem:ruby           # Build the ruby gem
-#  - rake gem:arm64-linux  # Build the aarch64-linux gem
+#  - rake gem:arm64-linux    # Build the aarch64-linux gem
 #  - rake gem:arm64-darwin   # Build the arm64-darwin gem
 #  - rake gem:x86_64-darwin  # Build the x86_64-darwin gem
 #  - rake gem:x86_64-linux   # Build the x86_64-linux gem
