@@ -1,5 +1,9 @@
 ## [Unreleased]
 
+## [0.4.0] - 2024-05-02
+
+- Release MinIO version `RELEASE.2024-05-01T01-11-10Z`
+
 ## [0.3.2] - 2024-04-30
 
 - Fix bug with forwarding arguments to Rake task sending symbols to `exec` ([@fractaledmind](https://github.com/fractaledmind/minio-ruby/pull/1))

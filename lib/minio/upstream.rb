@@ -1,6 +1,6 @@
 module MinIO
   module Upstream
-    VERSION = "RELEASE.2024-04-28T17-53-50Z"
+    VERSION = "RELEASE.2024-05-01T01-11-10Z"
 
     # rubygems platform name => upstream release filename
     NATIVE_PLATFORMS = {
